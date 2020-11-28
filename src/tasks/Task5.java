@@ -6,8 +6,12 @@ import common.Task;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /*
 Задача 5
@@ -20,7 +24,35 @@ public class Task5 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
-    return new ArrayList<>();
+    long startTime = new Date().getTime();
+
+    Map<Integer, Integer> sortedMap =
+        personAreaIds.entrySet().stream()
+            .sorted(Entry.comparingByValue())
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                (e1, e2) -> e1, LinkedHashMap::new));
+    // Пришлось добавить еще сортировку , т.к. List.of(person1, person2)
+    // в проверке теста иногда ставит персону с id = 2 на первое место изза этого
+    // тест то проходит то не проходит
+
+
+    List<ApiPersonDto> apiPersonDtos = new ArrayList<>();
+
+    sortedMap.forEach((personId, area) ->
+        apiPersonDtos.add(convert(persons.stream().filter(person -> personId.equals(person.getId())).findFirst().get(), area))
+    );
+    /*
+     Стартанули в : 1606590483755
+     Закончили в : 1606590483756
+     Потрачено  : 1
+     */
+
+    long endTime = new Date().getTime();
+    System.out.println("Стартанули в : " + startTime);
+    System.out.println("Закончили в : " + endTime);
+    System.out.println("Потрачено  : " + (endTime - startTime));
+
+    return apiPersonDtos;
   }
 
   private static ApiPersonDto convert(Person person, Integer areaId) {

@@ -6,6 +6,7 @@ import common.Task;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -19,7 +20,22 @@ public class Task4 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons) {
-    return new ArrayList<>();
+    long startTime = new Date().getTime();
+
+    List<ApiPersonDto> apiPersonDtos = new ArrayList<>();
+
+    persons.forEach(
+        person -> {
+          apiPersonDtos.add(convert(person));
+        }
+    );
+
+    long endTime = new Date().getTime();
+    System.out.println("Стартанули в : " + startTime);
+    System.out.println("Закончили в : " + endTime);
+    System.out.println("Потрачено  : " + (endTime - startTime));
+
+    return apiPersonDtos;
   }
 
   private static ApiPersonDto convert(Person person) {

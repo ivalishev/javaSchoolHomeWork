@@ -5,6 +5,7 @@ import common.Task;
 import common.Vacancy;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,26 @@ import java.util.Set;
 public class Task7 implements Task {
 
   private Set<String> vacancyNames(Collection<Company> companies) {
-    return new HashSet<>();
+    long startTime = new Date().getTime();
+    Set<String> vacancyNames = new HashSet<>();
+
+    companies
+        .forEach(company -> company.getVacancies()
+            .forEach(vacancy -> {
+              vacancyNames.add(vacancy.getTitle());
+            }));
+    //Стартанули в : 1606598940874
+    //Закончили в : 1606598940875
+    //Потрачено  : 1
+
+
+
+    long endTime = new Date().getTime();
+    System.out.println("Стартанули в : " + startTime);
+    System.out.println("Закончили в : " + endTime);
+    System.out.println("Потрачено  : " + (endTime - startTime));
+
+    return vacancyNames;
   }
 
   @Override

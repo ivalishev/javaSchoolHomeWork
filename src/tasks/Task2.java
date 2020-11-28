@@ -4,11 +4,13 @@ import common.Person;
 import common.Task;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
 Задача 2
@@ -22,7 +24,22 @@ public class Task2 implements Task {
   private static List<Person> combineAndSortWithLimit(Collection<Person> persons1,
                                                       Collection<Person> persons2,
                                                       int limit) {
-    return new ArrayList<>();
+    long startTime = new Date().getTime();
+
+    List<Person> combined = Stream.concat(persons1.stream(), persons2.stream())
+        .sorted(Comparator.comparing(Person::getCreatedAt))
+        .limit(limit)
+        .collect(Collectors.toList());
+    //Стартанули в : 1606581333114
+    //Закончили в : 1606581333114
+    //Потрачено  : 0
+
+    long endTime = new Date().getTime();
+    System.out.println("Стартанули в : " + startTime);
+    System.out.println("Закончили в : " + endTime);
+    System.out.println("Потрачено  : " + (endTime - startTime));
+
+    return combined;
   }
 
   @Override

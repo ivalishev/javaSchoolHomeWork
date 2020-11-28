@@ -6,6 +6,7 @@ import common.Task;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,28 @@ public class Task6 implements Task {
   private Set<String> getPersonDescriptions(Collection<Person> persons,
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
-    return new HashSet<>();
+    long startTime = new Date().getTime();
+    Set<String> nameArea = new HashSet<>();
+
+    personAreaIds
+        .forEach((integerKey, integerSet) -> integerSet
+            .forEach(integer -> {
+              nameArea.add(String.join(" - ",
+                  persons.stream().filter(person -> integerKey.equals(person.getId())).findFirst().get().getFirstName(),
+                  areas.stream().filter(area -> integer.equals(area.getId())).findFirst().get().getName())
+              );
+            })
+        );
+    //Стартанули в : 1606598940871
+    //Закончили в : 1606598940873
+    //Потрачено  : 2
+
+    long endTime = new Date().getTime();
+    System.out.println("Стартанули в : " + startTime);
+    System.out.println("Закончили в : " + endTime);
+    System.out.println("Потрачено  : " + (endTime - startTime));
+
+    return nameArea;
   }
 
   @Override
